@@ -1,0 +1,49 @@
+name: Deploy to Oracle Cloud
+
+on:
+  workflow_dispatch:
+    inputs:
+      user_ocid:
+        description: 'OCI User OCID'
+        required: true
+      tenancy_ocid:
+        description: 'OCI Tenancy OCID'
+        required: true
+      fingerprint:
+        description: 'OCI API Key Fingerprint'
+        required: true
+      private_key:
+        description: 'OCI API Private Key'
+        required: true
+      region:
+        description: 'OCI Region'
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up OCI CLI
+      uses: oracle/oci-cli-action@v1.0.0
+      with:
+        ociVersion: 'latest'
+
+    - name: Authenticate with OCI
+      run: |
+        echo '[DEFAULT]' > $HOME/.oci/config
+        echo 'user=${{ github.event.inputs.user_ocid }}' >> $HOME/.oci/config
+        echo 'fingerprint=${{ github.event.inputs.fingerprint }}' >> $HOME/.oci/config
+        echo 'key_file=$HOME/.oci/oci_api_key.pem' >> $HOME/.oci/config
+        echo 'tenancy=${{ github.event.inputs.tenancy_ocid }}' >> $HOME/.oci/config
+        echo 'region=${{ github.event.inputs.region }}' >> $HOME/.oci/config
+        echo "${{ github.event.inputs.private_key }}" > $HOME/.oci/oci_api_key.pem
+        chmod 600 $HOME/.oci/oci_api_key.pem
+
+    - name: Run Terraform
+      run: |
+        terraform init
+        terraform apply -auto-approve
