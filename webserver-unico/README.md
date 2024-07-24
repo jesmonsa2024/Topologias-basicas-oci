@@ -30,31 +30,6 @@ Para utilizar este repositorio y desplegar los recursos en OCI, sigue estos paso
 6. Ejecuta `terraform apply` para aplicar los cambios. Asegúrate de revisar el plan antes de aplicarlo.
 7. Una vez completado, visita la dirección IP pública de la VM con tu navegador para ver el contenido desplegado.
 
-# Despliegue de Infraestructura en Oracle Cloud con un click
-
-# Instrucciones de Despliegue
-
-Para desplegar la infraestructura en Oracle Cloud, sigue estos pasos:
-
-1. **Obtener Credenciales de Oracle Cloud**:
-    - Usuario OCID
-    - Tenancy OCID
-    - Fingerprint de la clave API
-    - Clave privada API
-    - Región de OCI
-
-2. **Iniciar el Despliegue**:
-    - Haz clic en el botón de abajo para iniciar el proceso de despliegue.
-    - Introduce las credenciales solicitadas cuando se te pidan.
-
-# Despliegue de Infraestructura en Oracle Cloud
-
-Haz clic en el botón para desplegar la infraestructura en Oracle Cloud:
-
-[![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://github.com/jesmonsa2024/webserver-unico/actions/workflows/deploy.yml)
-
-
-
 ## Contribuir
 
 Si deseas contribuir a este proyecto, por favor haz un fork del repositorio y envía un pull request con tus cambios. Asegúrate de seguir las mejores prácticas y mantener la estructura del proyecto.
