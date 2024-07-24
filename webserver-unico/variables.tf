@@ -10,6 +10,10 @@ variable "availablity_domain_name" { # definir el nombre del dominio de disponib
   default = "" # definir el valor por defecto
 }
 
+variable "private_key_path" {
+  default = "$HOME/.oci/oci_api_key.pem"
+}
+
 variable "VCN-CIDR" { # definir el CIDR de la VCN
   default = "10.0.0.0/16" # definir el valor por defecto
 }
