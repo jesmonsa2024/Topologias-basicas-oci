@@ -1,0 +1,46 @@
+name: Deploy to OCI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install OCI CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-pip
+        pip3 install oci
+
+    - name: Authenticate with OCI
+      run: |
+        mkdir -p $HOME/.oci
+        echo "${{ secrets.OCI_API_KEY }}" > $HOME/.oci/oci_api_key.pem
+
+    - name: Verify Private Key
+      run: cat $HOME/.oci/oci_api_key.pem
+
+    - name: Create variables.tfvars
+      run: |
+        echo "tenancy_ocid = \"${{ secrets.OCI_TENANCY_OCID }}\"" >> variables.tfvars
+        echo "user_ocid = \"${{ secrets.OCI_USER_OCID }}\"" >> variables.tfvars
+        echo "fingerprint = \"${{ secrets.OCI_FINGERPRINT }}\"" >> variables.tfvars
+        echo "private_key_path = \"$HOME/.oci/oci_api_key.pem\"" >> variables.tfvars
+        echo "compartment_ocid = \"${{ secrets.OCI_COMPARTMENT_OCID }}\"" >> variables.tfvars
+        echo "region = \"${{ secrets.OCI_REGION }}\"" >> variables.tfvars
+
+    - name: Change directory to webserver-unico
+      run: cd webserver-unico
+
+    - name: Run Terraform
+      run: |
+        terraform init
+        terraform plan -var-file=../variables.tfvars
+        terraform apply -auto-approve -var-file=../variables.tfvars
