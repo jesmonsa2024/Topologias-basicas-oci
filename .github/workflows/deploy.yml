@@ -27,20 +27,21 @@ jobs:
     - name: Verify Private Key
       run: cat $HOME/.oci/oci_api_key.pem
 
-    - name: Create variables.tfvars
-      run: |
-        echo "tenancy_ocid = \"${{ secrets.OCI_TENANCY_OCID }}\"" >> variables.tfvars
-        echo "user_ocid = \"${{ secrets.OCI_USER_OCID }}\"" >> variables.tfvars
-        echo "fingerprint = \"${{ secrets.OCI_FINGERPRINT }}\"" >> variables.tfvars
-        echo "private_key_path = \"$HOME/.oci/oci_api_key.pem\"" >> variables.tfvars
-        echo "compartment_ocid = \"${{ secrets.OCI_COMPARTMENT_OCID }}\"" >> variables.tfvars
-        echo "region = \"${{ secrets.OCI_REGION }}\"" >> variables.tfvars
-
     - name: Change directory to webserver-unico
       run: cd webserver-unico
 
+    - name: Create variables.tfvars
+      run: |
+        echo "tenancy_ocid = \"${{ secrets.OCI_TENANCY_OCID }}\"" >> webserver-unico/variables.tfvars
+        echo "user_ocid = \"${{ secrets.OCI_USER_OCID }}\"" >> webserver-unico/variables.tfvars
+        echo "fingerprint = \"${{ secrets.OCI_FINGERPRINT }}\"" >> webserver-unico/variables.tfvars
+        echo "private_key_path = \"$HOME/.oci/oci_api_key.pem\"" >> webserver-unico/variables.tfvars
+        echo "compartment_ocid = \"${{ secrets.OCI_COMPARTMENT_OCID }}\"" >> webserver-unico/variables.tfvars
+        echo "region = \"${{ secrets.OCI_REGION }}\"" >> webserver-unico/variables.tfvars
+
     - name: Run Terraform
       run: |
+        cd webserver-unico
         terraform init
-        terraform plan -var-file=../variables.tfvars
-        terraform apply -auto-approve -var-file=../variables.tfvars
+        terraform plan -var-file=variables.tfvars
+        terraform apply -auto-approve -var-file=variables.tfvars
